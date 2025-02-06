@@ -1,12 +1,8 @@
 package com.example.RacheleBurgio.config;
 
-import com.example.RacheleBurgio.Entity.Drink;
-import com.example.RacheleBurgio.Entity.Pizza;
-import com.example.RacheleBurgio.Entity.Topping;
+import com.example.RacheleBurgio.Entity.*;
 
-import com.example.RacheleBurgio.repository.DrinkRepository;
-import com.example.RacheleBurgio.repository.PizzaRepository;
-import com.example.RacheleBurgio.repository.ToppingRepository;
+import com.example.RacheleBurgio.repository.*;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +13,7 @@ import java.util.List;
 @Configuration
 public class DataLoader {
     @Bean
-    CommandLineRunner initData(PizzaRepository pizzaRepo, DrinkRepository drinkRepo, ToppingRepository toppingRepo) {
+    CommandLineRunner initData(PizzaRepository pizzaRepo, DrinkRepository drinkRepo, ToppingRepository toppingRepo, TavoloRepository tavoloRepo, OrdineRepository ordineRepo) {
         return args -> {
             Topping mozzarella = new Topping(null, "Mozzarella", 1.50);
             Topping funghi = new Topping(null,"Funghi", 2.00);
@@ -30,6 +26,16 @@ public class DataLoader {
             Drink cola = new Drink(null, "Coca-Cola", 2.50);
             Drink birra = new Drink(null,"Birra", 3.50);
             drinkRepo.saveAll(List.of(cola, birra));
+
+            Tavolo tavolo1 = new Tavolo(null, 1, false);
+            Tavolo tavolo2 = new Tavolo(null, 2, false);
+            tavoloRepo.saveAll(List.of(tavolo1, tavolo2));
+
+            Ordine ordine = new Ordine();
+            ordine.setTavolo(tavolo1);
+            ordine.setMenuItems(List.of(margherita, cola));
+            ordine.setTotale(margherita.getPrezzo() + cola.getPrezzo());
+            ordineRepo.save(ordine);
         };
     }
 }

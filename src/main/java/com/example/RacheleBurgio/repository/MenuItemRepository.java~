@@ -1,0 +1,4 @@
+package com.example.RacheleBurgio.repository;
+
+public interface MenuItemRepository {
+}
